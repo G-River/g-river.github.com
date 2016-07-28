@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="这世间事，不是你看不到，就不存在">
+    <meta name="keyword"  content="null">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          简要总结匿名内部类 - 回响
+        
+    </title>
+
+    <link rel="canonical" href="http://www.outofmemory.cc/2015/02/25/20150225-anonymous-inner-class/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">回响</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/index.html">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/index.html">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://www.outofmemory.cc/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/filter.png')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#技术" title="技术">技术</a>
+                        
+                          <a class="tag" href="/tags/#Java" title="Java">Java</a>
+                        
+                    </div>
+                    <h2>简要总结匿名内部类</h2>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 光河 on
+                        2015-02-25
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>匿名内部类属于java的基础知识，只是我们平时使用几率并不太大。<br>最近我上手使用java8新特性，其中引入的lambda表达式对简化代码非常有利。而要深入理解java的lambda表达式，必须对匿名内部类有个清晰的认识，因此做个简要的复习。</p>
+<h3 id="内部类"><a href="#内部类" class="headerlink" title="内部类"></a>内部类</h3><p>首先从内部类说起。内部类即定义在类中的类。本文中把外部的类称作外部类，在其内部的类称作内部类。<br>为什么要使用内部类呢？在《Java核心技术》一书中概括了以下三点：</p>
+<ul>
+<li>内部类方法可以访问该类定义所在的作用域中的数据，包括私有的数据。</li>
+<li>内部类可以对同一包中的其他类隐藏起来。</li>
+<li>当想要定义一个回调函数且不想编写大量代码时，使用匿名内部类比较便捷。</li>
+</ul>
+<p>首先通过下面这段代码，演示内部类：</p>
+<pre><code>//外部类
+class Outer {
+  private String outStr = &quot;hello outer&quot;;
+
+  //内部类：定义在类中
+  class Inner1{
+    private String innerStr = &quot;hello inner&quot;;
+    void inner1Method() {
+        System.out.println(outer);//内部类中可以直接使用外部类的变量
+    }
+  }
+
+  void outerMethod() {
+    //内部类：定义在方法中
+    class Inner2{
+        void inner2Method() {
+            System.out.println(outer);
+        }
+    }
+    //只能在方法中使用,在方法外无法调用
+    Inner2 inner2 = new Inner2();
+    inner2.innerMethod();
+  }
+
+  public static void main(String[] args){
+    //外部类中可以调用inner1中的方法和变量
+    Inner inner1 = new Inner1();
+    System.out.println(inner1.innerStr);
+    System.out.println(inner.inner1Method());
+    inner.innerMethod();
+    //无法调用Inner2,因为其定义在成员方法内
+  }
+}
+//外部类之外的另一个类
+class Demo{
+  void test() {
+    //可以调用Inner1中的方法
+    Outer.Inner1 inner1 = new Outer().new Inner1();
+    inner1.inner1Method();
+  }
+}
+</code></pre><p>上面代码中展示了内部类的两种使用位置及相应的调用方法：</p>
+<pre><code>1.外部类之内，成员方法之外：可以在外部类中使用，或外部类之外使用。
+
+2.外部类的成员方法的方法体中：只能在所在方法中使用，外部无法调用。
+</code></pre><p>而除了这两种，还有第三种使用的位置，即：</p>
+<pre><code>3.外部类的成员方法的参数中
+</code></pre><p>第三种位置和匿名内部类放在一起来说。</p>
+<h3 id="匿名内部类"><a href="#匿名内部类" class="headerlink" title="匿名内部类"></a>匿名内部类</h3><p>匿名内部类的目的是继承一个类或实现一个接口，直接实现其中的抽象方法，并创建实例，而不需要使用　class 类名{}　的形式去定义。</p>
+<p>举例，首先定义一个接口：</p>
+<pre><code>interface AnonyDemo{
+  public abstract void demoInner();
+}
+</code></pre><p>下面我们要实现这个接口，用什么方法呢？</p>
+<p>我们先按正常方法实现：</p>
+<pre><code>class AnonyDemoImpl implements AnonyDemo{
+  @Override
+  public void demoInner() {
+      System.out.println(&quot;匿名内部类ok&quot;);
+  }
+}
+</code></pre><p>然后这样调用：</p>
+<pre><code>AnonyDemo demo1 = new AnonyDemoImpl();
+demo1.demoInner();
+</code></pre><p>很明显，这样写非常繁琐，下面改成使用匿名内部类。</p>
+<p>匿名内部类的格式:</p>
+<pre><code>new 类名/接口名(){
+  覆盖类/接口中的代码，也可以自定义内容
+};
+</code></pre><p>下面使用匿名内部类实现该接口，同时进行调用：</p>
+<pre><code>new AnonyDemo(){
+    public void demoInner() {
+        System.out.println(&quot;匿名内部类ok&quot;);
+    }
+}.demoInner();
+</code></pre><p>这样明显比上一种方式简洁明了。</p>
+<p>那么如果有这种情况，某个方法的参数类型是某个接口类型，比如：</p>
+<pre><code>//规定参数类型为上面的AnonyDemo接口，方法内部使用了接口中的方法
+void outerMethod(AnonyDemo demo) {
+    demo.demoInner();
+}
+</code></pre><p>就可以在调用该方法的同时，实现AnonyDemo接口并实例：</p>
+<pre><code>//放在成员方法的参数位置的匿名内部类。这里在参数中实现了AnonyDemo接口，并且赋予接口的demoInner方法以我们想要的功能。
+outerMethod(new AnonyDemo() {
+    @Override
+    public void demoInner() {
+        System.out.println(&quot;参数的匿名内部类ok&quot;);
+    }
+});
+</code></pre>
+
+                <hr>
+
+                
+                <!-- 多说 Share start -->
+                </style>
+                <div class="ds-share"
+                    style="text-align: right"
+                    data-thread-key="2015/02/25/20150225-anonymous-inner-class/"
+                    data-title="简要总结匿名内部类"
+                    data-url="http://www.outofmemory.cc/2015/02/25/20150225-anonymous-inner-class/"
+                    data-images=""
+                    data-content="匿名内部类属于java的基础知识，只是我们平时使用几率并不太大。最近我上手使用java8新特性... | 回响 " >
+                    <div class="ds-share-inline">
+                      <ul  class="ds-share-icons-16">
+                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
+                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
+                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
+                      </ul>
+                      <div class="ds-share-icons-more">
+                      </div>
+                    </div>
+                <hr>
+                </div>
+                <!-- 多说 Share end-->
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2015/02/27/20150227-springjdbc-query/" data-toggle="tooltip" data-placement="top" title="java8的lambda表达式与SpringJdbc简单结合">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2015/02/20/20150220-hexo-install/" data-toggle="tooltip" data-placement="top" title="hexo3.0 安装疑难">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread"
+                        data-thread-key="2015/02/25/20150225-anonymous-inner-class/"
+                        data-title="简要总结匿名内部类"
+                        data-url="http://www.outofmemory.cc/2015/02/25/20150225-anonymous-inner-class/" >
+                    </div>
+                </div>
+                <!-- 多说评论框 end -->
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#技术" title="技术">技术</a>
+                        
+                          <a class="tag" href="/tags/#Java" title="Java">Java</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    // dynamic User by Hux
+    var _user = 'outofmemory';
+
+    // duoshuo comment query.
+    var duoshuoQuery = {short_name: _user };
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.douban.com/people/134978302">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/guang1991">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/u/5760755416">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 回响 2016
+                    <br>
+                    主题基于<a href="http://blog.kaijun.rocks">Kaijun</a>
+                    修改
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    由<a href="http://huangxuan.me">Hux</a>
+                    创建
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.outofmemory.cc/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://www.outofmemory.cc/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
