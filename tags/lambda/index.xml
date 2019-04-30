@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>lambda on 光</title>
-    <link>www.outofmemory.cc/tags/lambda/</link>
+    <link>http://www.outofmemory.cc/tags/lambda/</link>
     <description>Recent content in lambda on 光</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Fri, 27 Feb 2015 22:47:00 +0000</lastBuildDate>
     
-	<atom:link href="www.outofmemory.cc/tags/lambda/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://www.outofmemory.cc/tags/lambda/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Java8的lambda表达式与SpringJdbc简单结合</title>
-      <link>www.outofmemory.cc/posts/chinese-preview/</link>
+      <link>http://www.outofmemory.cc/posts/chinese-preview/</link>
       <pubDate>Fri, 27 Feb 2015 22:47:00 +0000</pubDate>
       
-      <guid>www.outofmemory.cc/posts/chinese-preview/</guid>
+      <guid>http://www.outofmemory.cc/posts/chinese-preview/</guid>
       <description>虽然jdbc的世界早已被各种ORM框架占领，而且Mybatis等框架确实在大型项目中有非常大的优势，但是在一些小型项目中，大型框架总让人感觉杀鸡用牛刀。 虽然spring自带的JdbcTemplate看</description>
     </item>
     

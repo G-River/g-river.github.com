@@ -3,57 +3,57 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>www.outofmemory.cc/about/</loc>
+    <loc>http://www.outofmemory.cc/about/</loc>
     <lastmod>2016-07-28T20:00:15+00:00</lastmod>
   </url>
   
   <url>
-    <loc>www.outofmemory.cc/</loc>
+    <loc>http://www.outofmemory.cc/</loc>
     <lastmod>2016-07-28T20:00:15+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>www.outofmemory.cc/tags/java/</loc>
+    <loc>http://www.outofmemory.cc/tags/java/</loc>
     <lastmod>2015-02-27T22:47:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>www.outofmemory.cc/posts/chinese-preview/</loc>
+    <loc>http://www.outofmemory.cc/posts/chinese-preview/</loc>
     <lastmod>2015-02-27T22:47:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>www.outofmemory.cc/posts/</loc>
-    <lastmod>2015-02-27T22:47:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>www.outofmemory.cc/tags/</loc>
+    <loc>http://www.outofmemory.cc/posts/</loc>
     <lastmod>2015-02-27T22:47:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>www.outofmemory.cc/tags/lambda/</loc>
+    <loc>http://www.outofmemory.cc/tags/</loc>
     <lastmod>2015-02-27T22:47:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>www.outofmemory.cc/posts/chinese-preview/</loc>
+    <loc>http://www.outofmemory.cc/tags/lambda/</loc>
+    <lastmod>2015-02-27T22:47:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.outofmemory.cc/posts/chinese-preview/</loc>
     <lastmod>2015-02-25T09:15:01+08:00</lastmod>
   </url>
   
   <url>
-    <loc>www.outofmemory.cc/posts/chinese-preview/</loc>
+    <loc>http://www.outofmemory.cc/posts/chinese-preview/</loc>
     <lastmod>2015-02-20T08:51:22+00:00</lastmod>
   </url>
   
   <url>
-    <loc>www.outofmemory.cc/categories/</loc>
+    <loc>http://www.outofmemory.cc/categories/</loc>
     <priority>0</priority>
   </url>
   
