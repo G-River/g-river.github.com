@@ -1,49 +1,40 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on outofmemory.cc</title>
-    <link>https://example.com/posts/</link>
-    <description>Recent content in Posts on outofmemory.cc</description>
+    <title>Posts on 光</title>
+    <link>www.outofmemory.cc/posts/</link>
+    <description>Recent content in Posts on 光</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 30 Apr 2019 16:48:07 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 27 Feb 2015 22:47:00 +0000</lastBuildDate>
     
-	<atom:link href="https://example.com/posts/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="www.outofmemory.cc/posts/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>Demo</title>
-      <link>https://example.com/posts/demo/</link>
-      <pubDate>Tue, 30 Apr 2019 16:48:07 +0800</pubDate>
-      
-      <guid>https://example.com/posts/demo/</guid>
-      <description>hello，你好</description>
-    </item>
     
     <item>
-      <title>java8的lambda表达式与SpringJdbc简单结合</title>
-      <link>https://example.com/posts/20150227-springjdbc-query/</link>
+      <title>Java8的lambda表达式与SpringJdbc简单结合</title>
+      <link>www.outofmemory.cc/posts/chinese-preview/</link>
       <pubDate>Fri, 27 Feb 2015 22:47:00 +0000</pubDate>
       
-      <guid>https://example.com/posts/20150227-springjdbc-query/</guid>
+      <guid>www.outofmemory.cc/posts/chinese-preview/</guid>
       <description>虽然jdbc的世界早已被各种ORM框架占领，而且Mybatis等框架确实在大型项目中有非常大的优势，但是在一些小型项目中，大型框架总让人感觉杀鸡用牛刀。 虽然spring自带的JdbcTemplate看</description>
     </item>
     
     <item>
       <title>简要总结匿名内部类</title>
-      <link>https://example.com/posts/20150225-anonymous-inner-class/</link>
+      <link>www.outofmemory.cc/posts/chinese-preview/</link>
       <pubDate>Wed, 25 Feb 2015 09:15:01 +0800</pubDate>
       
-      <guid>https://example.com/posts/20150225-anonymous-inner-class/</guid>
+      <guid>www.outofmemory.cc/posts/chinese-preview/</guid>
       <description>匿名内部类属于java的基础知识，只是我们平时使用几率并不太大。 最近我上手使用java8新特性，其中引入的lambda表达式对简化代码非常有利。而要深入理解java的lambda表达式，必须对匿名内部</description>
     </item>
     
     <item>
       <title>hexo3.0 安装疑难</title>
-      <link>https://example.com/posts/20150220-hexo-install/</link>
+      <link>www.outofmemory.cc/posts/chinese-preview/</link>
       <pubDate>Fri, 20 Feb 2015 08:51:22 +0000</pubDate>
       
-      <guid>https://example.com/posts/20150220-hexo-install/</guid>
+      <guid>www.outofmemory.cc/posts/chinese-preview/</guid>
       <description>系统版本：Ubuntu14 node.js版本： 完全依照hexo官方文档说明安装3.1.1（https://hexo.io/docs/#Installation ），期间却出现了几处异常的问题。 1.安装h</description>
     </item>
     
