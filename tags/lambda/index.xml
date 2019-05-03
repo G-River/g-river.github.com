@@ -13,10 +13,10 @@
     
     <item>
       <title>Java8的lambda表达式与SpringJdbc简单结合</title>
-      <link>http://www.outofmemory.cc/posts/chinese-preview/</link>
+      <link>http://www.outofmemory.cc/posts/20150227-springjdbc-query/</link>
       <pubDate>Fri, 27 Feb 2015 22:47:00 +0000</pubDate>
       
-      <guid>http://www.outofmemory.cc/posts/chinese-preview/</guid>
+      <guid>http://www.outofmemory.cc/posts/20150227-springjdbc-query/</guid>
       <description>虽然jdbc的世界早已被各种ORM框架占领，而且Mybatis等框架确实在大型项目中有非常大的优势，但是在一些小型项目中，大型框架总让人感觉杀鸡用牛刀。 虽然spring自带的JdbcTemplate看</description>
     </item>
     
