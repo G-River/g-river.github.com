@@ -113,15 +113,15 @@
 <p>很明显，这里只需要传进sql语句，ResultSetExtractor接口实现，以及sql的参数值，就可以查出结果并且封装为自定义类型。
 ResultSetExtractor接口代码：</p>
 
-<pre><code>public interface ResultSetExtractor&lt;T&gt; {
-  T extractData(ResultSet rs) throws SQLException, DataAccessException;
-}
+<pre><code>    public interface ResultSetExtractor&lt;T&gt; {
+      T extractData(ResultSet rs) throws SQLException, DataAccessException;
+    }
 </code></pre>
 
 <p>这是一个专供query()查询的回调接口，实现它时必须实现其中的extractData(ResultSet rs)方法，将结果集抽取成自定义类型（可以使用BeanPropertyRowMapper的mapRow方法来处理结果集）。</p>
 
 <p>如果是按照java8之前的语法，我们应该写一个实现类，实现ResultSetExtractor接口，然后new一个对象作为参数传进这个方法。
-当然，可以简化一下，在上一篇<a href="http://www.outofmemory.cc/2015/02/25/20150225-anonymous-inner-class/">关于匿名内部类的文章</a>中说过</p>
+当然，可以简化一下，在上一篇<a href="/posts/20150225-anonymous-inner-class">关于匿名内部类的文章</a>中说过</p>
 
 <ul>
 <li>当想要定义一个回调函数且不想编写大量代码时，使用匿名内部类比较便捷。</li>
@@ -129,14 +129,15 @@ ResultSetExtractor接口代码：</p>
 
 <p>所以我们可以使用匿名内部类调用这个方法：</p>
 
-<p>jdbcTemplate.query(&quot;SELECT * FROM user WHERE id = ?&quot;, new ResultSetExtractor<Optional<? extends Object>&gt;() {
+<pre><code>jdbcTemplate.query(&quot;SELECT * FROM user WHERE id = ?&quot;, new ResultSetExtractor&lt;Optional&lt;? extends Object&gt;&gt;() {
             @Override
             public Optional&lt;? extends Object&gt; extractData(ResultSet rs) throws SQLException, DataAccessException {
                 return rs.next() ? Optional.of(new BeanPropertyRowMapper&lt;&gt;(User.class).mapRow(rs, 0)) : Optional.empty();
             }
-        }, id);</p>
+        }, id);
+</code></pre>
 
-<p>上面的代码实现了从user表中查出一条数据，并封装为自定义的User对象（如果对匿名内部类不太熟悉，请进<a href="http://www.guang.gift/2015/02/25/anonymous-inner-class/">这篇文章</a>）</p>
+<p>上面的代码实现了从user表中查出一条数据，并封装为自定义的User对象（如果对匿名内部类不太熟悉，请进<a href="/posts/20150225-anonymous-inner-class">这篇文章</a></p>
 
 <h3 id="lambda表达式">lambda表达式</h3>
 

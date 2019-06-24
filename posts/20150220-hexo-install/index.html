@@ -103,7 +103,7 @@ node.js版本：</p>
 <p>完全依照hexo官方文档说明安装3.1.1（<a href="https://hexo.io/docs/#Installation">https://hexo.io/docs/#Installation</a> ），期间却出现了几处异常的问题。</p>
 
 <p>1.安装hexo后，hexo generate报错
-hexo generate Cannot find module 'escape-string-regexp'
+hexo generate Cannot find module &lsquo;escape-string-regexp&rsquo;
 会出现很多类似报错，都是由于缺少对应的module 。
 解决办法：
 npm install escape-string-regexp
@@ -112,7 +112,7 @@ npm install escape-string-regexp
 <p>2.guang@guang:~/blog$ hexo d
 ERROR Deployer not found: git
 解决方法：安装hexo-deployer-git
-npm install hexo-deployer-git --save</p>
+npm install hexo-deployer-git &ndash;save</p>
 
 <p>3.把公司电脑的sshkey加进自己的github，pull代码失败，提示
     ssh: connect to host github.com port 22: Connection timed out
@@ -175,11 +175,11 @@ npm install hexo-deployer-git --save</p>
 <p>5.由于本机用了两个git账号，username不同，想分别给两个不同的远程库提交代码。提交其中一个git远程库的时候发现username是另一个账户的。
 原因：hexo d命令向远程库提交代码时，使用的是全局的git变量中的username和email，（在~/.gitconfig中配置），而我在全局变量中配置的username和email是另一个账户的。所以名字错了。
 git在push代码时，优先使用local配置的email，如果local没有配置，则使用global配置。
-                git config --global -e 查看全局配置，相应文件在~/.gitconfig
-                git config --local -e 查看局部配置，相应文件在项目路径下的.git/config
-                git config --global user.email &quot;xxx@xxx.com&quot; 配置全局的邮箱
-                git config --local user.name &quot;***&quot; 配置全局的username
-                要配置局部的姓名和邮箱，把全局的 --global 改为 --local即可</p>
+                git config &ndash;global -e 查看全局配置，相应文件在~/.gitconfig
+                git config &ndash;local -e 查看局部配置，相应文件在项目路径下的.git/config
+                git config &ndash;global user.email &ldquo;xxx@xxx.com&rdquo; 配置全局的邮箱
+                git config &ndash;local user.name &ldquo;***&rdquo; 配置全局的username
+                要配置局部的姓名和邮箱，把全局的 &ndash;global 改为 &ndash;local即可</p>
 </div>
         <div class="post_footer">
           
