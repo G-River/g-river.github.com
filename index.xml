@@ -6,10 +6,19 @@
     <description>Recent content on 光</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 20 Jun 2019 20:00:15 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 21 Jun 2019 22:56:47 +0800</lastBuildDate>
     
 	<atom:link href="http://www.outofmemory.cc/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>如何思考传统算法问题——以Union-Find算法为例</title>
+      <link>http://www.outofmemory.cc/posts/union-find/</link>
+      <pubDate>Fri, 21 Jun 2019 22:56:47 +0800</pubDate>
+      
+      <guid>http://www.outofmemory.cc/posts/union-find/</guid>
+      <description>我们很多人有这样的困扰： “怎样系统地思考一个算法问题？” “为什么我只会解决见过的算法题，对陌生的算法题不知道怎样着手？” 《算法（第4版）》在第一章就解决了这个新手的困扰，介绍思考任意传统算法问题的科学</description>
+    </item>
     
     <item>
       <title>About me</title>

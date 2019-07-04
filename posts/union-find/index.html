@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-cn" >
+<head>
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+  
+  <meta name="author"
+        content="光"/>
+
+  
+  <meta name="description" content="我们很多人有这样的困扰： “怎样系统地思考一个算法问题？” “为什么我只会解决见过的算法题，对陌生的算法题不知道怎样着手？” 《算法（第4版）》在第一章就解决了这个新手的困扰，介绍思考任意传统算法问题的科学"/>
+  
+
+  
+  
+  <meta name="keywords" content="Hugo, theme, zozo"/>
+  
+
+  
+  <link rel="canonical" href="http://www.outofmemory.cc/posts/union-find/"/>
+
+  
+
+  <title>如何思考传统算法问题——以Union-Find算法为例 &middot; 光</title>
+
+  <link rel="shortcut icon" href="http://www.outofmemory.cc/images/favicon.ico"/>
+  <link rel="stylesheet" href="http://www.outofmemory.cc/css/animate.min.css"/>
+  <link rel="stylesheet" href="http://www.outofmemory.cc/css/remixicon.css"/>
+  <link rel="stylesheet" href="http://www.outofmemory.cc/css/zozo.css"/>
+  <link rel="stylesheet" href="http://www.outofmemory.cc/css/highlight.css"/>
+
+  
+  
+</head>
+
+<body>
+<div class="main animated">
+  <div class="nav_container animated fadeInDown">
+  <div class="site_nav" id="site_nav">
+    <ul>
+      
+      <li>
+        <a href="/">首页</a>
+      </li>
+      
+      <li>
+        <a href="/posts/">归档</a>
+      </li>
+      
+      <li>
+        <a href="/tags/">标签</a>
+      </li>
+      
+      <li>
+        <a href="/about/">关于</a>
+      </li>
+      
+    </ul>
+  </div>
+  <div class="menu_icon">
+    <a id="menu_icon"><i class="remixicon-links-line"></i></a>
+  </div>
+</div>
+
+  <div class="header animated fadeInDown">
+  <div class="site_title_container">
+    <div class="site_title">
+      <h1>
+        <a href="http://www.outofmemory.cc">
+          <span>光</span>
+          <img src="http://www.outofmemory.cc/images/logo.svg"/>
+        </a>
+      </h1>
+    </div>
+    <div class="description">
+      <p class="sub_title">Hello?</p>
+      <div class="my_socials">
+        
+        
+        <a href="https://github.com/zhuguang" title="github" target="_blank"><i class="remixicon-github-fill"></i></a>
+        
+        
+        <a href="http://www.outofmemory.cc/index.xml" type="application/rss+xml" title="rss" target="_blank"><i class="remixicon-rss-fill"></i></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div class="content">
+    <div class="post_page">
+      <div class="post animated fadeInDown">
+        <div class="post_title post_detail_title">
+          <h2><a href='/posts/union-find/'>如何思考传统算法问题——以Union-Find算法为例</a></h2>
+          <span class="date">2019.06.21</span>
+        </div>
+        <div class="post_content markdown">
+
+<p>我们很多人有这样的困扰：</p>
+
+<pre><code>“怎样系统地思考一个算法问题？”  
+“为什么我只会解决见过的算法题，对陌生的算法题不知道怎样着手？”  
+</code></pre>
+
+<p>《算法（第4版）》在第一章就解决了这个新手的困扰，介绍思考任意传统算法问题的科学思路。本文做一个梳理，通过Union-find算法作为例子，总结面对一个传统算法场景的思考方向。</p>
+
+<h3 id="总体思路">总体思路</h3>
+
+<pre><code> 定义基本操作API -&gt; 定义测试用例 -&gt; 实现一个简单方案 -&gt; 分析算法效率 -&gt; 优化迭代 
+</code></pre>
+
+<h2 id="以-union-find-问题为例">以 Union-Find 问题为例：</h2>
+
+<h5 id="什么是-union-find-问题">什么是 Union-Find 问题？</h5>
+
+<p>假如有很多点，构成这样的集合。<br />
+<img src="/content-img/union-find/img1.png" style="width: 500px;"></p>
+
+<p>每个点右下角是角标，代表点的位置。<br />
+一句话概括问题就是<strong><em>判断其中任意2个点是否连接</em></strong>，具体如下：<br />
+1. 输入：一串数字，每两个数字为一组，比如 tinyUF.txt：</p>
+
+<pre><code>» cat tinyUF.txt
+15
+4 3
+3 8
+6 5
+9 4
+2 1
+8 9
+5 0
+7 2
+6 1
+1 0
+6 7
+</code></pre>
+
+<p>第一个数字表示数据集大小，我们先忽略它。<br />
+2. 从第二行开始每次读2个数字为一组，判断这两个数字代表的点是否连接。（这里定义的连接可以传递，比如a连接b，b连接c，那么a与c也连接。）<br />
+3. 如果不连接，实现算法让其连接；如果连接，返回true，然后继续读下一组数。</p>
+
+<h3 id="step-1-定义api">Step 1. 定义API</h3>
+
+<p>一般来讲，我们要先把问题明确为一个函数，规定入参和出参。或者，把问题明确为一个类，规定类中包括哪些成员变量和方法。<br />
+当我们想好函数的入参和出参(或这个类的每个方法参数和返回值)，就相当于明确了我们要解决什么问题。<br />
+这样用“封装”的思想，把问题定义在这个函数或类里，我们只需要思考怎么实现函数就行了。<br />
+（据我观察，工作中遇到的很多问题，都是因为没把问题本身想清楚，当你明确了问题之后，问题自然解决了。）</p>
+
+<h5 id="定义api就是抽象问题的过程">定义API就是抽象问题的过程</h5>
+
+<ul>
+<li>用 int[] 表示所有点的集合。<br />
+这相当于把每个点抽象成数组里的一个元素，元素的角标用来确定这个点的位置，元素的值代表这个点的某种信息，比如所在分量的标识。<br /></li>
+<li>把互相连接的点的集合称为<strong>分量</strong>。<br /></li>
+<li>接下来就定义解决这个问题的类：<br /></li>
+</ul>
+
+<pre><code>class UF{
+    //    所有点的集合
+    private int[] id;
+    //    分量数量
+    private int count;
+    //    初始化
+    public UF(int N) { }
+    //    查找分量标识符
+    public int find(int p) { }
+    //    两个触点是否连接，也就是是否在同一个分量
+    public boolean connected(int p, int q) { }
+    //    连接两个触点
+    public void union(int p, int q){ }
+    public int count() { }
+}
+</code></pre>
+
+<p>我们接下来的任务就是实现这个类里面每个方法。
+其实，我们只需要优化这两个方法：</p>
+
+<pre><code>//根据角标找到这个点的值
+public int find(int p) {}
+//连接两个点，参数为角标
+public void union(int p, int q) {}
+</code></pre>
+
+<p>因为其他方法可以基于这两个方法实现。<br />
+为了之后方便定义多种实现，把上面的类改为抽象类，同时先实现其他方法的逻辑：</p>
+
+<pre><code>public abstract class UF {
+    //    所有点的集合
+    private int[] id;
+    //    分量数量
+    private int count;
+    //    初始化
+    public UF(int N) {
+        count = N;
+        id = new int[N];
+        for (int i = 0; i &lt; N; i++) {
+            id[i] = i;
+        }
+    }
+    //todo    查找分量标识符，这里先写一种最简单的方法，之后需要优化
+    public int find(int p) {
+        return id[p];
+    }
+    //    两个点是否连接，也就是是否在同一个分量
+    public boolean connected(int p, int q) {
+        return find(p) == find(q);
+    }
+    //todo    连接两个点，需要在接下来实现
+    abstract public void union(int p, int q);
+    public int count() {
+        return count;
+    }
+}
+</code></pre>
+
+<p>这样，之后每次写出新的实现，只需继承同一个抽象类，实现 find() 和 union()。</p>
+
+<h3 id="step-2-定义测试用例">Step 2. 定义测试用例</h3>
+
+<p>在真正写实现逻辑之前，首先定义测试用例是比较好的习惯，既能检测上面定义的API是否合理，也可以方便实现之后验证效果。<br />
+定义一个实现类，用来写具体逻辑：</p>
+
+<pre><code>public class UFQuickFind extends UF {
+// 具体需要实现的方法
+    public UFQuickFind(int N) {
+        super(N);
+    }
+//具体需要实现的方法
+    public void union(int p, int q) {}
+//测试用例
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int count = scanner.nextInt();
+        UFQuickFind qf = new UFQuickFind(count);
+        while (scanner.hasNextInt()) {
+            int p = scanner.nextInt();
+            int q = scanner.nextInt();
+//            判断是否连接
+            if (qf.connected(p, q)) {
+                continue;
+            }
+//            如果没连接，则归并分量
+            qf.union(p, q);
+//            打印连接
+            System.out.println(p + &quot; &quot; + q);
+        }
+        System.out.println(qf.count() + &quot;components&quot;);
+    }
+}
+</code></pre>
+
+<p>做这种小实验，个人喜欢摆脱 IDE，用命令行编译：<br />
+<img src="/content-img/union-find/img2.png" style="width: 500px;"><br />
+测试数据 tinyUF.txt 可以在《算法》官网找到 <a href="https://algs4.cs.princeton.edu/15uf/">https://algs4.cs.princeton.edu/15uf/</a></p>
+
+<h3 id="step-3-简单实现-quick-find-算法">Step 3. 简单实现：quick-find 算法</h3>
+
+<p>首先我们需要先定义，什么叫<strong><em>连接</em></strong>？
+我们姑且用两个元素的值相等来代表连接。显然，同一个分量中每个元素值都相等。
+比如：</p>
+
+<pre><code>id[0] == id[5]  
+</code></pre>
+
+<p>代表0和5连接，也就是说属于同一分量。</p>
+
+<h5 id="实现-find-方法">实现 find() 方法：</h5>
+
+<p>上面在 class UF中已经写了这种find() 方法，很简单，就是拿到数组角标对应的值，代表所属分量。</p>
+
+<pre><code>public int find(int p) {
+    return id[p];
+}
+</code></pre>
+
+<h5 id="实现-union-方法">实现 union() 方法：</h5>
+
+<p>union() 方法用来连接两个点，只需要遍历每个元素，把一个点所属分量合并到另一个点所属的分量。</p>
+
+<pre><code>    public void union(int p, int q) {
+//        找p和q各自所属分量
+        int pGroup = find(p);
+        int qGroup = find(q);
+        if (pGroup == qGroup) {
+            return;
+        }
+//        遍历所有元素，把与q同一个分量的元素放到p所属的分量
+        for (int t = 0; t &lt; id.length; t++) {
+            if (id[t] == qGroup) {
+                id[t] = pGroup;
+            }
+        }
+        count--;
+    }
+</code></pre>
+
+<p>因为这个算法的 find() 查找很快，所以叫 quick-find 算法。<br />
+测试结果：<br />
+<img src="/content-img/union-find/img3.png" style="width: 500px;"></p>
+
+<h3 id="step-4-分析效率">Step 4. 分析效率</h3>
+
+<p>显然，quick-find 算法效率不高：</p>
+
+<p>我们在这里把访问数组的次数作为衡量效率的指标，如果不管数据规模如何，某个算法只需访问数组常数次，则复杂度O(1)。这样规定指标的做法叫<strong><em>成本模型</em></strong>，这里的<strong><em>成本模型</em></strong>是访问数组的次数。</p>
+
+<ul>
+<li>find() 时间复杂度 O(1)<br /></li>
+<li>union() 时间复杂度 O(N)，N就是数组长度<br /></li>
+<li>如果想用 quick-find 算法把所有数据连通，最后只剩下一个分量，最坏情况需要调用 N-1次 union()，那么很明显，这种情况下，时间复杂度 O(N^2)。</li>
+</ul>
+
+<p>对于这个算法，直觉上很容易发现 union() 之所以效率低，是因为遍历了所有元素，受原始数据规模影响。接下来的优化思路，自然是想办法避免这种遍历。</p>
+
+<h3 id="step-5-优化-quick-union-算法">Step 5. 优化：quick-union 算法</h3>
+
+<p>如果让一个分量的元素之间构成一种关联关系，能不能避免遍历所有数据才能找到分量？<br />
+比如，可以利用元素的值来指向另一个元素：<br />
+<strong><em>id[] 数组每个元素的值是同分量另一个元素的角标</em></strong><br />
+这样，我们根据任意元素，可以追溯同分量的另一个元素，直到最后一个元素，这时，规定最后一个元素的值等于自己的角标。<br />
+这样，相当于每个元素的值都像一个“指针”，指向另一个元素。最后一个元素的“指针”指向自己。<br />
+想象一下，每个分量构成了一个树状结构。<br />
+<img src="/content-img/union-find/img4.png" style="width: 350px;"></p>
+
+<h5 id="这种设计下-怎么表示两个点-连接">这种设计下，怎么表示两个点“连接”？</h5>
+
+<p>显然，当两个点属于同一分量，那么两个点属于同一个“树”，有同一个“根节点”。所以，用根节点的值表示所属分量，也就是 find() 的返回值。</p>
+
+<h5 id="实现-find">实现 find()</h5>
+
+<p>根据参数角标，拿到对应元素值，指向了下一个元素角标，然后访问下一个元素的值，就是下下个元素角标……不断向前追溯，直到某个元素的值等于自己角标值，说明这个元素是根节点。<br />
+我写了两种方法，一种是递归：</p>
+
+<pre><code>public int find(int p) {
+    int pVal = id[p];
+    if (pVal == p) {
+        return p;
+    }
+    return find(pVal);
+}
+</code></pre>
+
+<p>一种是用 while() 循环：</p>
+
+<pre><code>public int find(int p) {
+    while (p != id[p]) {
+        p = id[p];
+    }
+    return p;
+}
+</code></pre>
+
+<h5 id="实现-union">实现 union()</h5>
+
+<p>用 find() 找到两个点各自所属的树的根节点，把一个根节点指向另一个根节点，这样，就合并两个树。</p>
+
+<pre><code>public void union(int p, int q) {
+    int pRoot = find(p);
+    int qRoot = find(q);
+    if (pRoot == qRoot) {
+        return;
+    }
+    id[pRoot] = qRoot;
+    count--;
+    return;
+}
+</code></pre>
+
+<p>因为这种算法的 union() 效率很高，所以叫 quick-union 算法。</p>
+
+<h2 id="重复-step-4-step-5">重复 Step 4 - Step 5</h2>
+
+<h3 id="分析-quick-union-效率">分析 quick-union 效率</h3>
+
+<h5 id="find-方法时间复杂度">find() 方法时间复杂度</h5>
+
+<p>只看用 while 循环的方法。find() 查找速度受节点与根节点距离（也就是深度）影响，如果节点的父节点就是根节点，那么显然只需要访问数组2次。但如果整个原始数据构成一张树，且节点深度等于 N-1，这是 find() 遇到的最坏情况，如图：<br />
+<img src="/content-img/union-find/img5.png" style=" height: 360px;"><br />
+如果调用find(0)，则需要访问 2 * (N-1)  (每次 while 循环访问2次)。<br />
+什么样的输入会导致这种最坏情况？<br />
+比如在输入：</p>
+
+<pre><code>0-1 0-2 0-3 0-4 0-5 0-6 0-7 0-8 0-9 
+</code></pre>
+
+<p>这样的序列，find()复杂度为 O(N)，union中会调用2次 find()，复杂度也是 O(N)。<br />
+如果想把所有元素连通，最坏情况总的复杂度依然是 O(N^2)。<br />
+之所以会有这样的情况，是因为每次连接两个树，总是朝同一侧合并根节点。不能控制树的规模。所以接下来思考方向是，怎么控制合并的树的规模，尽量均匀分配，不形成“一棵独大”的树。</p>
+
+<h3 id="继续优化-quick-union-算法-weighted-quick-union-算法">继续优化 quick-union 算法：weighted-quick-union 算法</h3>
+
+<p>既然我们想控制树的高度，就需要先思考这个问题：树的高度是什么时候增加的？<br />
+union() 中把树 A 根节点指向树 B 根节点的时候，树 A 的高度增加1，树 B 的高度不变。<br />
+所以，优化的方法呼之欲出：union() 中每次合并树的时候，把高度小的树往高度大的树上合并。这样，合并后只会增高小树。<br />
+所以我们需要增加一个数组，记录根节点对应的树的高度。合并树的时候，读取两个根节点对应的树的高度，找出哪棵树更高。</p>
+
+<pre><code>
+</code></pre>
+
+<h3 id="分析-weighted-quick-union-算法">分析 weighted-quick-union 算法</h3>
+
+<h3 id="最优算法-路径压缩-weighted-quick-union-算法">最优算法：路径压缩 weighted-quick-union 算法</h3>
+
+<h3 id="分析路径压缩-weighted-quick-union-算法">分析路径压缩 weighted-quick-union 算法</h3>
+</div>
+        <div class="post_footer">
+          
+        </div>
+      </div>
+      
+      
+    </div>
+  </div>
+  <a id="back_to_top" href="#" class="back_to_top"><span>△</span></a>
+</div>
+<footer class="footer">
+  <div class="powered_by">
+    <a href="https://zeuk.me">Designed by Zeuk,</a>
+    <a href="http://www.gohugo.io/">Proudly published with Hugo</a>
+  </div>
+
+  <div class="footer_slogan">
+    <span>我走在春风中细嗅青草和花香，知道脚下踩死了草木和蚂蚁</span>
+  </div>
+</footer>
+
+
+
+<script src="http://www.outofmemory.cc/js/jquery-3.3.1.min.js"></script>
+<script src="http://www.outofmemory.cc/js/zozo.js"></script>
+<script src="http://www.outofmemory.cc/js/highlight.pack.js"></script>
+<link  href="http://www.outofmemory.cc/css/fancybox.min.css" rel="stylesheet">
+<script src="http://www.outofmemory.cc/js/fancybox.min.js"></script>
+
+<script>hljs.initHighlightingOnLoad()</script>
+
+
+  <script type="text/javascript" async src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[\[','\]\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+
+MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<style>
+code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+}
+</style>
+
+
+
+
+
+
+</body>
+</html>
