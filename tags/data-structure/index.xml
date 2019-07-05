@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Data Structure on 光</title>
+    <link>http://www.outofmemory.cc/tags/data-structure/</link>
+    <description>Recent content in Data Structure on 光</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 05 Jul 2019 10:30:00 +0800</lastBuildDate>
+    
+	<atom:link href="http://www.outofmemory.cc/tags/data-structure/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>如何思考传统算法问题——以 Union-Find 算法为例</title>
+      <link>http://www.outofmemory.cc/posts/union-find/</link>
+      <pubDate>Fri, 05 Jul 2019 10:30:00 +0800</pubDate>
+      
+      <guid>http://www.outofmemory.cc/posts/union-find/</guid>
+      <description>我们常有这样的困扰： “怎样系统地思考一个算法问题？” “为什么我只会解决见过的算法题，对陌生的算法题不知道怎样着手？” 之所以说传统算法问题，是为了区别于机器学习算法，我们这里所说的算法，只涉及传统的数据</description>
+    </item>
+    
+  </channel>
+</rss>
